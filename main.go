@@ -66,6 +66,23 @@ func main() {
 	items.Put("/:id", handlers.UpdateItem)
 	items.Delete("/:id", handlers.DeleteItem)
 
+	// Customer routes
+	customers := api.Group("/customers")
+	customers.Get("/", handlers.GetAllCustomers)
+	customers.Get("/:id", handlers.GetCustomerByID)
+	customers.Post("/", handlers.CreateCustomer)
+	customers.Put("/:id", handlers.UpdateCustomer)
+	customers.Delete("/:id", handlers.DeleteCustomer)
+
+	// Sales routes
+	sales := api.Group("/sales")
+	sales.Get("/", handlers.GetAllSales)
+	sales.Get("/stats", handlers.GetSalesStats)
+	sales.Get("/:id", handlers.GetSaleByID)
+	sales.Post("/", handlers.CreateSale)
+	sales.Put("/:id", handlers.UpdateSale)
+	sales.Delete("/:id", handlers.DeleteSale)
+
 	// Start server
 	log.Printf("Server starting on port %s", cfg.AppPort)
 	log.Fatal(app.Listen(":" + cfg.AppPort))

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { userApi, itemApi } from "@/services/api"
-import { Users, Package, ShoppingCart, TrendingUp } from "lucide-react"
+import { userApi, itemApi, customerApi, salesApi } from "@/services/api"
+import { Users, Package, ShoppingCart, TrendingUp, DollarSign, UserCheck } from "lucide-react"
 import Link from "next/link"
 
 export default function Dashboard() {
@@ -12,6 +12,9 @@ export default function Dashboard() {
     totalItems: 0,
     activeItems: 0,
     totalStock: 0,
+    totalCustomers: 0,
+    totalSales: 0,
+    totalRevenue: 0,
   })
 
   useEffect(() => {
@@ -20,9 +23,11 @@ export default function Dashboard() {
 
   const fetchStats = async () => {
     try {
-      const [users, items] = await Promise.all([
+      const [users, items, customers, salesStats] = await Promise.all([
         userApi.getAll(),
         itemApi.getAll(),
+        customerApi.getAll(),
+        salesApi.getStats(),
       ])
 
       setStats({
@@ -30,6 +35,9 @@ export default function Dashboard() {
         totalItems: items.length,
         activeItems: items.filter(item => item.is_active).length,
         totalStock: items.reduce((sum, item) => sum + item.stock, 0),
+        totalCustomers: customers.length,
+        totalSales: salesStats.total_sales,
+        totalRevenue: salesStats.total_revenue,
       })
     } catch (error) {
       console.error("Failed to fetch stats:", error)
@@ -46,17 +54,15 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-        <Link href="/users">
+        <Link href="/customers">
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
-              <Users className="h-4 w-4 text-muted-foreground" />
+              <CardTitle className="text-sm font-medium">Customers</CardTitle>
+              <UserCheck className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats.totalUsers}</div>
-              <p className="text-xs text-muted-foreground">
-                Registered system users
-              </p>
+              <div className="text-2xl font-bold">{stats.totalCustomers}</div>
+              <p className="text-xs text-muted-foreground">Registered customers</p>
             </CardContent>
           </Card>
         </Link>
@@ -64,41 +70,37 @@ export default function Dashboard() {
         <Link href="/items">
           <Card className="hover:shadow-lg transition-shadow cursor-pointer">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Items</CardTitle>
+              <CardTitle className="text-sm font-medium">Products</CardTitle>
               <Package className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalItems}</div>
-              <p className="text-xs text-muted-foreground">
-                Products in catalog
-              </p>
+              <p className="text-xs text-muted-foreground">In catalog</p>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/sales">
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Total Sales</CardTitle>
+              <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{stats.totalSales}</div>
+              <p className="text-xs text-muted-foreground">Orders placed</p>
             </CardContent>
           </Card>
         </Link>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Items</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Revenue</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.activeItems}</div>
-            <p className="text-xs text-muted-foreground">
-              Currently available
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Stock</CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{stats.totalStock}</div>
-            <p className="text-xs text-muted-foreground">
-              Units in inventory
-            </p>
+            <div className="text-2xl font-bold">${stats.totalRevenue.toFixed(2)}</div>
+            <p className="text-xs text-muted-foreground">Total earnings</p>
           </CardContent>
         </Card>
       </div>

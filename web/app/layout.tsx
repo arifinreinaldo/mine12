@@ -46,6 +46,18 @@ export default function RootLayout({
                     >
                       Items
                     </Link>
+                    <Link
+                      href="/customers"
+                      className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700"
+                    >
+                      Customers
+                    </Link>
+                    <Link
+                      href="/sales"
+                      className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-500 border-b-2 border-transparent hover:border-gray-300 hover:text-gray-700"
+                    >
+                      Sales
+                    </Link>
                   </div>
                 </div>
               </div>

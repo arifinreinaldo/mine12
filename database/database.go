@@ -32,6 +32,9 @@ func Migrate() error {
 	err := DB.AutoMigrate(
 		&models.User{},
 		&models.Item{},
+		&models.Customer{},
+		&models.Sale{},
+		&models.SaleItem{},
 	)
 
 	if err != nil {

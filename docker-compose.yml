@@ -41,6 +41,21 @@ services:
       - sales_network
     restart: unless-stopped
 
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: sales_web
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:3000
+    ports:
+      - "3001:3001"
+    depends_on:
+      - app
+    networks:
+      - sales_network
+    restart: unless-stopped
+
 volumes:
   postgres_data:
 

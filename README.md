@@ -1,38 +1,68 @@
-# Sales API - Go Fiber Application
+# Sales Management System
 
-A RESTful API for sales management built with Go, Fiber framework, and PostgreSQL.
+A full-stack sales management application with Go Fiber backend and Next.js frontend.
 
 ## Features
 
+### Backend (Go Fiber)
 - ✅ User management with access level control (Admin, Manager, Staff, Read-only)
 - ✅ Master item/product management
 - ✅ CRUD operations for both users and items
 - ✅ PostgreSQL database with GORM
-- ✅ Docker and Docker Compose support
 - ✅ Soft delete functionality
 - ✅ Input validation
 - ✅ Password hashing with bcrypt
 
+### Frontend (Next.js)
+- ✅ Modern responsive UI with Tailwind CSS and shadcn/ui
+- ✅ Dashboard with system statistics
+- ✅ User management interface
+- ✅ Item/inventory management interface
+- ✅ Real-time CRUD operations
+- ✅ Toast notifications
+- ✅ Docker support
+
 ## Tech Stack
 
+### Backend
 - **Framework**: Go Fiber v2
 - **Database**: PostgreSQL 15
 - **ORM**: GORM
-- **Containerization**: Docker & Docker Compose
 - **Validation**: go-playground/validator
 - **Password Hashing**: bcrypt
+
+### Frontend
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **Icons**: Lucide React
+- **HTTP Client**: Axios
+
+### DevOps
+- **Containerization**: Docker & Docker Compose
+- **Multi-container orchestration**: 3 services (PostgreSQL, Backend, Frontend)
 
 ## Project Structure
 
 ```
 .
-├── config/          # Configuration management
-├── database/        # Database connection and migrations
-├── handlers/        # HTTP request handlers
-├── models/          # Data models and DTOs
-├── main.go          # Application entry point
-├── Dockerfile       # Docker image configuration
-├── docker-compose.yml
+├── config/              # Backend configuration
+├── database/            # Database connection and migrations
+├── handlers/            # HTTP request handlers
+├── models/              # Data models and DTOs
+├── web/                 # Next.js frontend application
+│   ├── app/            # Next.js pages (App Router)
+│   ├── components/     # React components
+│   │   ├── ui/        # shadcn/ui components
+│   │   ├── users/     # User management components
+│   │   └── items/     # Item management components
+│   ├── services/       # API client
+│   ├── types/          # TypeScript types
+│   └── lib/            # Utility functions
+├── main.go              # Backend entry point
+├── Dockerfile           # Backend Docker config
+├── docker-compose.yml   # Multi-container orchestration
 ├── .env.example
 └── README.md
 ```
@@ -84,7 +114,10 @@ docker-compose down
 docker-compose down -v
 ```
 
-The API will be available at `http://localhost:3000`
+The application will be available at:
+- **Frontend UI**: `http://localhost:3001`
+- **Backend API**: `http://localhost:3000`
+- **Database**: `localhost:5432`
 
 ### Option 2: Running Locally
 
